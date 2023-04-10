@@ -1,14 +1,25 @@
+import datetime
 import time
 
-def countdown(t):
-    while t:
-        min, sec = divmod(t, 60)
-        timer = '{:02d}:{:02d}'.format(min,sec)
-        print (timer,end='\r')
-        time.sleep(1)
-        t -=1
+def countdown(tempo_em_segundos):
+    try:
+        tempo_em_segundos = int(tempo_em_segundos)
+    except ValueError:
+        print("Por favor, insira um valor numérico para o tempo em segundos.")
+        return
 
-    print('Timer completo')
-t = input('insira o tempo em segunods: ')
+    tempo_restante = datetime.timedelta(seconds=tempo_em_segundos)
 
-countdown(int(t))
+    while tempo_restante:
+        print(f"Tempo restante: {tempo_restante}", end="\r")
+        tempo_restante -= datetime.timedelta(seconds=1)
+        try:
+            time.sleep(1)
+        except KeyboardInterrupt:
+            break
+
+    print('Contagem regressiva concluída!')
+
+tempo = input('Insira o tempo em segundos: ')
+
+countdown(tempo)
